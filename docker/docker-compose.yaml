@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  ai-orchestrator:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: telcocare-cloud-ai
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=false
+      - HOST=0.0.0.0
+      - PORT=8000
+      - SECRET_KEY=telco-prod-secure-secret-key-2026
+      - ROUTER_API_SECRET=openwrt-edge-router-secret-2026
+      - LLM_MODEL=qwen2.5-72b-instruct
+      - LLM_BASE_URL=https://api.openai.com/v1
+      - LLM_API_KEY=${LLM_API_KEY:-sk-dummy-key}
+      - BILLING_API_BASE_URL=http://mock-billing:8080/v1
+      - BILLING_API_KEY=telco-billing-token-internal
+      - TUYA_API_BASE_URL=https://openapi.tuyaus.com/v1.0
+      - TUYA_CLIENT_ID=${TUYA_CLIENT_ID:-tuya_client_id}
+      - TUYA_CLIENT_SECRET=${TUYA_CLIENT_SECRET:-tuya_secret}
+      - REDIS_URL=redis://redis:6379/0
+      - DATABASE_URL=postgresql+asyncpg://telco_user:telco_secret_password@postgres:5432/telcocare_db
+    depends_on:
+      - redis
+      - postgres
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: telcocare-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: telcocare-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: telco_user
+      POSTGRES_PASSWORD: telco_secret_password
+      POSTGRES_DB: telcocare_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  redis-data:
+  postgres-data:
