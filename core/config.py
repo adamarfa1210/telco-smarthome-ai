@@ -28,12 +28,13 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: List[str] = ["*"]
     RATE_LIMIT_REQUESTS_PER_MINUTE: int = 120
 
-    # LLM Settings (OpenAI-compatible or Local Qwen / vLLM Endpoint)
-    LLM_API_KEY: str = "dummy-or-env-provided-key"
-    LLM_MODEL: str = "qwen2.5-72b-instruct"
-    LLM_BASE_URL: str = "https://api.openai.com/v1"
+    # LLM Settings (Groq Cloud API Endpoint)
+    LLM_API_KEY: str = "your-groq-api-key"
+    LLM_MODEL: str = "qwen/qwen3.6-27b"
+    LLM_BASE_URL: str = "https://api.groq.com/openai/v1"
     LLM_TEMPERATURE: float = 0.0
     LLM_MAX_TOKENS: int = 1024
+    LLM_TIMEOUT_SEC: float = 30.0
 
     # Integrations
     BILLING_API_BASE_URL: str = "https://billing-internal.telco.operator.net/v1"

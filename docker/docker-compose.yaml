@@ -16,9 +16,9 @@ services:
       - PORT=8000
       - SECRET_KEY=telco-prod-secure-secret-key-2026
       - ROUTER_API_SECRET=openwrt-edge-router-secret-2026
-      - LLM_MODEL=qwen2.5-72b-instruct
-      - LLM_BASE_URL=https://api.openai.com/v1
-      - LLM_API_KEY=${LLM_API_KEY:-sk-dummy-key}
+      - LLM_MODEL=qwen/qwen3.6-27b
+      - LLM_BASE_URL=https://api.groq.com/openai/v1
+      - LLM_API_KEY=${LLM_API_KEY:-gsk_dummy_key}
       - BILLING_API_BASE_URL=http://mock-billing:8080/v1
       - BILLING_API_KEY=telco-billing-token-internal
       - TUYA_API_BASE_URL=https://openapi.tuyaus.com/v1.0

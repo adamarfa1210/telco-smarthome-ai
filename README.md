@@ -96,8 +96,38 @@ The **TelcoCare Cloud AI Orchestrator** is the central reasoning brain in the op
 - Python 3.10+
 - (Optional) Docker & Docker Compose
 
-### Local Development Setup
+### Configuration & LLM Setup
 
+Before running the server, copy the docker env example to `.env` in the root directory:
+```bash
+cp docker/.env.example .env
+```
+
+Open `.env` and configure the LLM settings:
+
+#### Option A: Groq Cloud API (Default & Recommended)
+This is the default configuration for fast, cloud-based inference:
+```env
+LLM_MODEL=qwen/qwen3.6-27b
+LLM_BASE_URL=https://api.groq.com/openai/v1
+LLM_API_KEY=your_groq_api_key_here
+LLM_TEMPERATURE=0.0
+LLM_MAX_TOKENS=1024
+LLM_TIMEOUT_SEC=30.0
+```
+
+#### Option B: Local Ollama
+To run the orchestrator entirely locally using CPU/GPU via Ollama:
+```env
+LLM_MODEL=qwen2.5:3b
+LLM_BASE_URL=http://localhost:11434/v1
+LLM_API_KEY=ollama
+LLM_TEMPERATURE=0.0
+LLM_MAX_TOKENS=1024
+LLM_TIMEOUT_SEC=300.0  # Set higher timeout for local CPU execution
+```
+
+#### Local Development Setup
 1. **Install Dependencies**:
 ```bash
 pip install -r requirements.txt
@@ -113,7 +143,15 @@ Navigate to `http://localhost:8000/docs`.
 
 ---
 
-## 4. API Endpoints Reference
+## 4. Running Tests
+You can verify the entire suite of 32 tests (schema, security, agent reasoning, API gateways) by running:
+```bash
+pytest -v
+```
+
+---
+
+## 5. API Endpoints Reference
 
 ### A. Natural Language Control
 - **`POST /api/v1/control/command`**

@@ -37,7 +37,7 @@ def get_llm():
         base_url=settings.LLM_BASE_URL,
         temperature=settings.LLM_TEMPERATURE,
         max_tokens=settings.LLM_MAX_TOKENS,
-        timeout=10.0,
+        timeout=settings.LLM_TIMEOUT_SEC,
     )
 
 
